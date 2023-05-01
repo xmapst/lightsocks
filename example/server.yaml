@@ -1,0 +1,59 @@
+RunMode: Server
+# 本地监听
+Inbound:
+  Host: 0.0.0.0
+  Port: 8443
+  # 服务端的TOKEN
+  Token: { your_token }
+  # 证书
+#  TLS:
+#    Enable: true
+#    Key: /your/path/ssl.key
+#    Cert: /your/path/ssl.cert
+Outbound:
+  # 连接超时时间
+  Timeout: 15s
+  # 指定出口网卡
+  Interface: eth0
+  # 作用于linux下的fwmark
+  #RoutingMark: 6666
+# Dashboard
+Dashboard:
+  Host: 127.0.0.1
+  Port: 8080
+  # RESTful API auth
+  #Token: { your_token }
+  # 证书
+#  TLS:
+#    Enable: true
+#    Key: /your/path/ssl.key
+#    Cert: /your/path/ssl.cert
+
+# DNS Cache
+DNS:
+# Static hosts for DNS server and connection establishment (like /etc/hosts)
+#
+# Wildcard hostnames are supported (e.g. *.example.dev, *.foo.*.example.com)
+# Non-wildcard domain names have a higher priority than wildcard domain names
+# e.g. foo.example.com > *.example.com > .example.com
+# P.S. +.foo.com equals to .foo.com and foo.com
+  Hosts:
+    '*.baidu.com': 127.0.0.1
+    '.dev': 127.0.0.1
+    'alpha.google.dev': '::1'
+# Supports UDP, TCP, DoT, DoH. You can specify the port to connect to.
+# All DNS questions are sent directly to the nameserver, without proxies
+# involved. answers the DNS question with the first result gathered.
+  NameServers:
+    - 114.114.114.114 # default value
+    - 8.8.8.8 # default value
+    - tls://dns.rubyfish.cn:853 # DNS over TLS
+    - https://1.1.1.1/dns-query # DNS over HTTPS
+#    - '8.8.8.8#en0'
+Log:
+  Level: info
+  #Filename: logs/lightsocks.log
+  MaxBackups: 7
+  MaxSize: 50   # megabytes
+  MaxAge: 7     # days
+  Compress: true # compress log

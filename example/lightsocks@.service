@@ -1,0 +1,14 @@
+[Unit]
+Description=lightsocks - Support socks4, socks4a, socks5, socks5h, http proxy all in one
+Documentation=https://github.com/xmapst/lightsocks
+After=network.target nss-lookup.target
+
+[Service]
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/lightsocks -c /etc/lightsocks/%i.yaml
+Restart=on-failure
+RestartSec=10s
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target

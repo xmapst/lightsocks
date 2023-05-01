@@ -1,0 +1,118 @@
+.connections-card {
+    display: flex;
+    flex: 1;
+    margin-top: 10px;
+    padding: 0;
+    overflow: hidden;
+
+    .connections-th {
+        $height: 30px;
+
+        display: inline-block;
+        position: relative;
+        text-align: center;
+        color: $color-gray-darken;
+        background: $color-gray-light;
+        height: $height;
+        line-height: $height;
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+
+        &.resizing .connections-resizer {
+            opacity: 1;
+            cursor: col-resize;
+        }
+
+        &.fixed {
+            position: sticky !important;
+            left: -0.1px;
+            z-index: 99;
+            &.shadow {
+                box-shadow: inset -9px 0 8px -14px $color-black;
+            }
+        }
+    }
+
+    .connections-resizer {
+        $padding: 8px;
+        $width: 20px;
+
+        position: absolute;
+        opacity: 0;
+        right: math.div($width, -2);
+        top: $padding;
+        bottom: $padding;
+        width: $width;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+        font-size: 14px;
+        font-weight: 300;
+        touch-action: none;
+        cursor: col-resize;
+
+        &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            left: math.div($width, 2);
+            transform: translateX(-1px);
+            width: 2px;
+            height: 100%;
+            background-color: rgba($color-gray-darken, 60%);
+        }
+    }
+
+    .connections-header {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        white-space: nowrap;
+
+        &:hover .connections-resizer {
+            opacity: 1;
+        }
+    }
+
+    .connections-block {
+        display: inline-block;
+        font-size: 14px;
+        line-height: 36px;
+        padding: 0 10px;
+        color: $color-primary-darken;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.completed {
+            background-color: darken($color-gray-light, 3%);
+            color: rgba($color-primary-darken, 50%);
+        }
+
+        &.fixed {
+            position: sticky;
+            left: 0;
+            z-index: 998;
+            background-color: $color-white;
+            &.shadow {
+                box-shadow: inset -9px 0 8px -14px $color-black;
+            }
+        }
+    }
+}
+
+.connections-filter {
+    color: $color-primary-dark;
+    font-size: 14px;
+    line-height: 20px;
+    margin-left: 15px;
+    text-shadow: 0 0 6px rgba($color: $color-primary-dark, $alpha: 0.4);
+    cursor: pointer;
+
+    &.dangerous {
+        color: $color-red;
+        text-shadow: 0 0 6px rgba($color: $color-primary, $alpha: 0.2);
+    }
+}

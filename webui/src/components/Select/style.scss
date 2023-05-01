@@ -1,0 +1,62 @@
+.select {
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 30px;
+    color: $color-primary-darken;
+    display: flex;
+    overflow: hidden;
+
+    > i {
+        margin-left: 5px;
+        color: $color-primary-darken;
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+    }
+}
+
+.select-list {
+    position: absolute;
+    max-width: 170px;
+    border-radius: 4px;
+    pointer-events: none;
+    transition: all 200ms ease;
+
+    .list {
+        opacity: 0;
+        max-height: 300px;
+        overflow: auto;
+        background: $color-white;
+        padding: 0;
+        transition: all 200ms ease;
+        border-radius: 4px;
+
+        > .option {
+            color: $color-primary-darken;
+            padding: 10px 15px;
+            font-size: 14px;
+            list-style: none;
+            cursor: pointer;
+
+            &:hover {
+                background: rgba($color: $color-primary-lightly, $alpha: 0.5);
+            }
+        }
+
+        > .selected {
+            background: rgba($color: $color-primary-lightly, $alpha: 0.5);
+        }
+    }
+}
+
+.select-list-show {
+    pointer-events: visible;
+    transform: scaleY(1);
+    box-shadow: 0 2px 5px rgba($color: $color-gray-dark, $alpha: 0.5);
+
+    .list {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}

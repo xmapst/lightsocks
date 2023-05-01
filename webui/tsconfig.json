@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "lib": [
+            "dom",
+        ],
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "types": ["vite/client"],
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@lib": ["src/lib"],
+            "@lib/*": ["src/lib/*"],
+            "@components": ["src/components"],
+            "@components/*": ["src/components/*"],
+            "@containers": ["src/containers"],
+            "@containers/*": ["src/containers/*"],
+            "@i18n": ["src/i18n"],
+            "@i18n/*": ["src/i18n/*"],
+            "@stores": ["src/stores"],
+            "@stores/*": ["src/stores/*"],
+            "@models": ["src/models"],
+            "@models/*": ["src/models/*"],
+            "@styles": ["src/styles"],
+            "@styles/*": ["src/styles/*"]
+        }
+    },
+    "include": [
+        "src",
+        "vite.config.ts",
+        "uno.config.ts"
+    ]
+}

@@ -1,0 +1,112 @@
+import { produce } from 'immer'
+import { useState, useMemo, useRef, useCallback } from 'react'
+
+import type * as API from '@lib/request'
+
+export type Connection = API.Connections & { completed?: boolean, uploadSpeed: number, downloadSpeed: number }
+
+export interface FormatConnection {
+    id: string
+    client: string
+    source: string
+    target: string
+    time: number
+    upload: number
+    download: number
+    type: string
+    network: string
+    speed: {
+        upload: number
+        download: number
+    }
+    completed: boolean
+    original: Connection
+}
+
+class Store {
+    protected connections = new Map<string, Connection>()
+
+    protected saveDisconnection = false
+
+    appendToSet (connections: API.Connections[]) {
+        const mapping = connections.reduce(
+            (map, c) => map.set(c.ID, c), new Map<string, API.Connections>(),
+        )
+
+        for (const id of this.connections.keys()) {
+            if (!mapping.has(id)) {
+                if (!this.saveDisconnection) {
+                    this.connections.delete(id)
+                } else {
+                    const connection = this.connections.get(id)
+                    if (connection != null) {
+                        this.connections.set(id, produce(connection, draft => {
+                            draft.completed = true
+                            draft.uploadSpeed = 0
+                            draft.downloadSpeed = 0
+                        }))
+                    }
+                }
+            }
+        }
+
+        for (const id of mapping.keys()) {
+            if (!this.connections.has(id)) {
+                this.connections.set(id, { ...mapping.get(id)!, uploadSpeed: 0, downloadSpeed: 0 })
+                continue
+            }
+
+            const c = this.connections.get(id)!
+            const n = mapping.get(id)!
+            this.connections?.set(id, { ...n, uploadSpeed: n.Upload - c.Upload, downloadSpeed: n.Download - c.Download })
+        }
+    }
+
+    toggleSave () {
+        if (this.saveDisconnection) {
+            this.saveDisconnection = false
+            for (const id of this.connections.keys()) {
+                if (this.connections?.get(id)?.completed) {
+                    this.connections.delete(id)
+                }
+            }
+        } else {
+            this.saveDisconnection = true
+        }
+
+        return this.saveDisconnection
+    }
+
+    getConnections () {
+        return [...this.connections.values()]
+    }
+}
+
+export function useConnections () {
+    const store = useMemo(() => new Store(), [])
+    const shouldFlush = useRef(true)
+    const [connections, setConnections] = useState<Connection[]>([])
+    const [save, setSave] = useState<boolean>(false)
+
+    const feed = useCallback(function (connections: API.Connections[]) {
+        store.appendToSet(connections)
+        if (shouldFlush.current) {
+            setConnections(store.getConnections())
+        }
+
+        shouldFlush.current = !shouldFlush.current
+    }, [store])
+
+    const toggleSave = useCallback(function () {
+        const state = store.toggleSave()
+        setSave(state)
+
+        if (!state) {
+            setConnections(store.getConnections())
+        }
+
+        shouldFlush.current = true
+    }, [store])
+
+    return { connections, feed, toggleSave, save }
+}
