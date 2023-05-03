@@ -11,6 +11,9 @@ import (
 type tracker interface {
 	ID() string
 	Close() error
+	MetadataX() *constant.Metadata
+	UploadTotalX() int64
+	DownloadTotalX() int64
 }
 
 type trackerInfo struct {
@@ -25,6 +28,18 @@ type TcpTracker struct {
 	net.Conn `json:"-"`
 	*trackerInfo
 	manager *Manager
+}
+
+func (tt *TcpTracker) MetadataX() *constant.Metadata {
+	return tt.Metadata
+}
+
+func (tt *TcpTracker) UploadTotalX() int64 {
+	return tt.UploadTotal.Load()
+}
+
+func (tt *TcpTracker) DownloadTotalX() int64 {
+	return tt.DownloadTotal.Load()
 }
 
 func (tt *TcpTracker) ID() string {

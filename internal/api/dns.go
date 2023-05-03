@@ -12,7 +12,7 @@ import (
 
 func queryDNS(c *gin.Context) {
 	if resolver.DefaultResolver == nil {
-		c.JSON(http.StatusInternalServerError, newError("DNS section is disabled"))
+		c.SecureJSON(http.StatusInternalServerError, newError("DNS section is disabled"))
 		return
 	}
 
@@ -21,7 +21,7 @@ func queryDNS(c *gin.Context) {
 
 	qType, exist := dns.StringToType[qTypeStr]
 	if !exist {
-		c.JSON(http.StatusBadRequest, newError("DNS section is disabled"))
+		c.SecureJSON(http.StatusBadRequest, newError("DNS section is disabled"))
 		return
 	}
 
@@ -32,7 +32,7 @@ func queryDNS(c *gin.Context) {
 	msg.SetQuestion(dns.Fqdn(name), qType)
 	resp, err := resolver.DefaultResolver.ExchangeContext(ctx, &msg)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, newError(err.Error()))
+		c.SecureJSON(http.StatusInternalServerError, newError(err.Error()))
 		return
 	}
 
@@ -65,5 +65,5 @@ func queryDNS(c *gin.Context) {
 	if len(resp.Extra) > 0 {
 		responseData["Additional"] = lo.Map(resp.Extra, rr2Json)
 	}
-	c.JSON(http.StatusOK, responseData)
+	c.SecureJSON(http.StatusOK, responseData)
 }

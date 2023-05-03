@@ -7,11 +7,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 	info "github.com/xmapst/lightsocks"
 	"github.com/xmapst/lightsocks/internal/constant"
@@ -45,7 +46,6 @@ func Server(server *constant.Server) {
 		}),
 		timeoutMiddleware(server.Timeout),
 		gin.Recovery(),
-		gzip.Gzip(gzip.DefaultCompression),
 	)
 	pprof.Register(router)
 
@@ -58,7 +58,7 @@ func Server(server *constant.Server) {
 		if websocket.IsWebSocketUpgrade(c.Request) && c.Query("token") != "" {
 			token := c.Query("token")
 			if token != server.Token {
-				c.JSON(http.StatusUnauthorized, ErrUnauthorized)
+				c.SecureJSON(http.StatusUnauthorized, ErrUnauthorized)
 				c.Abort()
 				return
 			}
@@ -72,7 +72,7 @@ func Server(server *constant.Server) {
 		hasInvalidHeader := bearer != "Bearer"
 		hasInvalidSecret := !found || token != server.Token
 		if hasInvalidHeader || hasInvalidSecret {
-			c.JSON(http.StatusUnauthorized, ErrUnauthorized)
+			c.SecureJSON(http.StatusUnauthorized, ErrUnauthorized)
 			c.Abort()
 			return
 		}
@@ -86,6 +86,19 @@ func Server(server *constant.Server) {
 		api.DELETE("/connections/:id", closeConnection)
 		api.GET("/dns/query", queryDNS)
 	}
+	// prometheus
+	router.GET("/metrics", func(c *gin.Context) {
+		h := promhttp.InstrumentMetricHandler(
+			prometheus.DefaultRegisterer, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{
+				ErrorLog:      logrus.StandardLogger(),  // 采集过程中如果出现错误，记录日志
+				ErrorHandling: promhttp.ContinueOnError, // 采集过程中如果出现错误，继续采集其他数据，不会中断采集器的工作
+				Timeout:       server.Timeout,           // 超时时间
+			}),
+		)
+		h.ServeHTTP(c.Writer, c.Request)
+	})
+	go collectMetricsLoop()
+
 	// dashboard静态页面
 	router.Use(info.StaticFile("/"))
 
@@ -107,7 +120,7 @@ func Server(server *constant.Server) {
 }
 
 func timeoutResponse(c *gin.Context) {
-	c.JSON(http.StatusGatewayTimeout, newError("Timeout"))
+	c.SecureJSON(http.StatusGatewayTimeout, newError("Timeout"))
 }
 
 func timeoutMiddleware(duration time.Duration) gin.HandlerFunc {
@@ -121,7 +134,7 @@ func timeoutMiddleware(duration time.Duration) gin.HandlerFunc {
 }
 
 func version(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
+	c.SecureJSON(http.StatusOK, gin.H{
 		"Name":      info.Name,
 		"Version":   info.Version,
 		"BuildTime": info.BuildTime,
@@ -149,7 +162,7 @@ func traffic(c *gin.Context) {
 		var err error
 		wsConn, err = upgrader.Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, newError(err.Error()))
+			c.SecureJSON(http.StatusBadRequest, newError(err.Error()))
 			return
 		}
 	}

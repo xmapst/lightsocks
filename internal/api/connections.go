@@ -14,20 +14,20 @@ import (
 func getConnections(c *gin.Context) {
 	if !websocket.IsWebSocketUpgrade(c.Request) {
 		snapshot := statistic.DefaultManager.Snapshot()
-		c.JSON(http.StatusOK, snapshot)
+		c.SecureJSON(http.StatusOK, snapshot)
 		return
 	}
 
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrBadRequest)
+		c.SecureJSON(http.StatusBadRequest, ErrBadRequest)
 		return
 	}
 
 	intervalStr := c.DefaultQuery("interval", "1000")
 	interval, err := strconv.Atoi(intervalStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrBadRequest)
+		c.SecureJSON(http.StatusBadRequest, ErrBadRequest)
 		return
 	}
 
@@ -43,7 +43,7 @@ func getConnections(c *gin.Context) {
 	}
 
 	if err = sendSnapshot(); err != nil {
-		c.JSON(http.StatusBadRequest, ErrBadRequest)
+		c.SecureJSON(http.StatusBadRequest, ErrBadRequest)
 		return
 	}
 
@@ -65,7 +65,7 @@ func closeConnection(c *gin.Context) {
 			break
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.SecureJSON(http.StatusOK, gin.H{
 		"Code": http.StatusOK,
 		"Msg":  "Closed",
 	})
@@ -76,7 +76,7 @@ func closeAllConnections(c *gin.Context) {
 	for _, conn := range snapshot.Connections {
 		_ = conn.Close()
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.SecureJSON(http.StatusOK, gin.H{
 		"Code": http.StatusOK,
 		"Msg":  "Closed",
 	})
