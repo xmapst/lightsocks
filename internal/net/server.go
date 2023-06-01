@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/pires/go-proxyproto"
-	"github.com/sirupsen/logrus"
 	"io"
 	"net"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/pires/go-proxyproto"
+	"github.com/sirupsen/logrus"
 )
 
 type IConnHandler interface {

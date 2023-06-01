@@ -3,12 +3,13 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
-	"github.com/xmapst/lightsocks/internal/statistic"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
+	"github.com/xmapst/lightsocks/internal/statistic"
 )
 
 func getConnections(c *gin.Context) {

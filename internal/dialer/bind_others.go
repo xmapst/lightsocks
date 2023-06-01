@@ -3,10 +3,11 @@
 package dialer
 
 import (
-	"github.com/xmapst/lightsocks/internal/iface"
 	"net"
 	"strconv"
 	"strings"
+
+	"github.com/xmapst/lightsocks/internal/iface"
 )
 
 func lookupLocalAddr(ifaceName string, network string, destination net.IP, port int) (net.Addr, error) {

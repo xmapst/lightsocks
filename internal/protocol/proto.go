@@ -3,11 +3,12 @@ package protocol
 import (
 	"encoding/binary"
 	"errors"
+	"io"
+	"math/rand"
+
 	"github.com/sirupsen/logrus"
 	"github.com/xmapst/lightsocks/internal/cipher"
 	"github.com/xmapst/lightsocks/internal/compress"
-	"io"
-	"math/rand"
 )
 
 type Packet struct {

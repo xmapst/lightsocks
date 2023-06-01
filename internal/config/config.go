@@ -1,10 +1,16 @@
 package config
 
 import (
-	"crypto/tls"
 	"errors"
 	"fmt"
+	"net"
+	"net/url"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/fsnotify/fsnotify"
+	"github.com/refraction-networking/utls"
 	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -13,11 +19,6 @@ import (
 	"github.com/xmapst/lightsocks/internal/resolver"
 	"github.com/xmapst/lightsocks/internal/trie"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"net"
-	"net/url"
-	"os"
-	"strings"
-	"time"
 )
 
 var (

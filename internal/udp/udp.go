@@ -2,12 +2,13 @@ package udp
 
 import (
 	"encoding/binary"
-	"github.com/sirupsen/logrus"
-	"github.com/xmapst/lightsocks/internal/constant"
 	"net"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/sirupsen/logrus"
+	"github.com/xmapst/lightsocks/internal/constant"
 )
 
 type Udp struct {

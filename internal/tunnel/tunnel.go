@@ -2,7 +2,11 @@ package tunnel
 
 import (
 	"context"
-	"crypto/tls"
+	"net"
+	"runtime"
+	"time"
+
+	"github.com/refraction-networking/utls"
 	"github.com/sirupsen/logrus"
 	"github.com/smallnest/chanx"
 	"github.com/xmapst/lightsocks/internal/config"
@@ -10,9 +14,6 @@ import (
 	"github.com/xmapst/lightsocks/internal/dialer"
 	N "github.com/xmapst/lightsocks/internal/net"
 	"github.com/xmapst/lightsocks/internal/statistic"
-	"net"
-	"runtime"
-	"time"
 )
 
 var (
@@ -67,7 +68,18 @@ func handleTCPConn(ctx *constant.TCPContext, server *constant.Server) {
 		return
 	}
 	if server.TLS.Enable && config.RunMode == config.ClientMode {
-		tlsConn := tls.Client(destConn, server.TLSConf)
+		helloID := tls.ClientHelloID{}
+		switch server.TLS.Fingerprint {
+		case "firefox":
+			helloID = tls.HelloFirefox_Auto
+		case "chrome":
+			helloID = tls.HelloChrome_Auto
+		case "ios":
+			helloID = tls.HelloIOS_Auto
+		default:
+			helloID = tls.HelloFirefox_Auto
+		}
+		tlsConn := tls.UClient(destConn, server.TLSConf, helloID)
 		err = tlsConn.Handshake()
 		if err != nil {
 			logrus.Errorln(ctx.Metadata.ID, "-->", ctx.Metadata.Client, "-->", ctx.Metadata.Source, "-->", ctx.Metadata.Target, err.Error())

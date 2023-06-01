@@ -1,8 +1,9 @@
 package dialer
 
 import (
-	"go.uber.org/atomic"
 	"time"
+
+	"go.uber.org/atomic"
 )
 
 var (

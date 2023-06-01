@@ -1,13 +1,14 @@
 package net
 
 import (
-	"github.com/sirupsen/logrus"
-	"github.com/xmapst/lightsocks/internal/constant"
-	"github.com/xmapst/lightsocks/internal/protocol"
 	"io"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/sirupsen/logrus"
+	"github.com/xmapst/lightsocks/internal/constant"
+	"github.com/xmapst/lightsocks/internal/protocol"
 )
 
 type Relay struct {

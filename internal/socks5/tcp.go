@@ -4,13 +4,14 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/gofrs/uuid"
-	"github.com/sirupsen/logrus"
-	"github.com/xmapst/lightsocks/internal/constant"
 	"io"
 	"net"
 	"strconv"
 	"sync"
+
+	"github.com/gofrs/uuid"
+	"github.com/sirupsen/logrus"
+	"github.com/xmapst/lightsocks/internal/constant"
 )
 
 type Proxy struct {
@@ -93,25 +94,25 @@ func (p *Proxy) handshake() error {
 	return nil
 
 	// TODO: VerifyUser
-	//hasPassAuth := false
-	//var passAuth byte = 0x02
+	// hasPassAuth := false
+	// var passAuth byte = 0x02
 	//
 	// check auth method
 	// only password(0x02) supported
-	//for i := 2; i < n; i++ {
+	// for i := 2; i < n; i++ {
 	//	if buf[i] == passAuth {
 	//		hasPassAuth = true
 	//		break
 	//	}
-	//}
+	// }
 	//
-	//if !hasPassAuth {
+	// if !hasPassAuth {
 	//	_, _ = p.conn.Write([]byte{0x05, 0xff})
 	//	log.Errorln(p.id, p.srcAddr(), "no supported auth method")
 	//	return errors.New("no supported auth method")
-	//}
+	// }
 	//
-	//return p.passwordAuth()
+	// return p.passwordAuth()
 }
 
 func (p *Proxy) passwordAuth() error {

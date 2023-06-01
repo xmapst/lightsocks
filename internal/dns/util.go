@@ -5,13 +5,14 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"net"
+	"strings"
+	"time"
+
 	"github.com/miekg/dns"
 	"github.com/sirupsen/logrus"
 	"github.com/xmapst/lightsocks/internal/cache"
 	"github.com/xmapst/lightsocks/internal/picker"
-	"net"
-	"strings"
-	"time"
 )
 
 func putMsgToCache(c *cache.LruCache, key string, msg *dns.Msg) {

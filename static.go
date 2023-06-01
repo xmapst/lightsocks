@@ -2,10 +2,11 @@ package lightsocks
 
 import (
 	"embed"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"path"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 //go:embed static/*
@@ -24,7 +25,7 @@ func StaticFile(urlPrefix string) gin.HandlerFunc {
 		urlPath = path.Join(fsBase, urlPath)
 		f, err := staticFS.Open(urlPath)
 		if err != nil {
-			//NoRoute
+			// NoRoute
 			bs, err := staticFS.ReadFile(path.Join(fsBase, "/", indexHtml))
 			if err != nil {
 				logrus.Error(err, "embed fs")

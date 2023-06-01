@@ -2,8 +2,9 @@ package lightsocks
 
 import (
 	"fmt"
-	"github.com/common-nighthawk/go-figure"
 	"runtime"
+
+	"github.com/common-nighthawk/go-figure"
 )
 
 var (

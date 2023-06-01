@@ -1,10 +1,11 @@
 package dialer
 
 import (
-	"github.com/xmapst/lightsocks/internal/iface"
-	"golang.org/x/sys/unix"
 	"net"
 	"syscall"
+
+	"github.com/xmapst/lightsocks/internal/iface"
+	"golang.org/x/sys/unix"
 )
 
 type controlFn = func(network, address string, c syscall.RawConn) error

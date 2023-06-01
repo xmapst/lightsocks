@@ -1,9 +1,10 @@
 package dialer
 
 import (
-	"golang.org/x/sys/unix"
 	"net"
 	"syscall"
+
+	"golang.org/x/sys/unix"
 )
 
 type controlFn = func(network, address string, c syscall.RawConn) error

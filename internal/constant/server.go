@@ -1,9 +1,10 @@
 package constant
 
 import (
-	"crypto/tls"
-	"github.com/sirupsen/logrus"
 	"time"
+
+	"github.com/refraction-networking/utls"
+	"github.com/sirupsen/logrus"
 )
 
 type Server struct {
@@ -30,7 +31,6 @@ func (s *Server) LoadTLS() {
 	if s.TLS == nil {
 		s.TLS = new(TLS)
 	}
-
 	if s.TLS.ServerName == "" {
 		s.TLSConf.InsecureSkipVerify = true
 	} else {
@@ -53,8 +53,9 @@ func (s *Server) LoadTLS() {
 }
 
 type TLS struct {
-	Enable     bool   `yaml:""`
-	ServerName string `yaml:""`
-	Key        string `yaml:""`
-	Cert       string `yaml:""`
+	Enable      bool   `yaml:""`
+	ServerName  string `yaml:""`
+	Key         string `yaml:""`
+	Cert        string `yaml:""`
+	Fingerprint string `yaml:""`
 }

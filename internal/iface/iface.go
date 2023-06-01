@@ -2,9 +2,10 @@ package iface
 
 import (
 	"errors"
-	"github.com/xmapst/lightsocks/internal/singledo"
 	"net"
 	"time"
+
+	"github.com/xmapst/lightsocks/internal/singledo"
 )
 
 type Interface struct {

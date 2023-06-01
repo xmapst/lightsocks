@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/miekg/dns"
-	"github.com/sirupsen/logrus"
-	"github.com/xmapst/lightsocks/internal/trie"
 	"math/rand"
 	"net"
 	"strings"
 	"time"
+
+	"github.com/miekg/dns"
+	"github.com/sirupsen/logrus"
+	"github.com/xmapst/lightsocks/internal/trie"
 )
 
 var (

@@ -5,13 +5,15 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"github.com/miekg/dns"
-	"github.com/xmapst/lightsocks/internal/dialer"
-	"github.com/xmapst/lightsocks/internal/resolver"
 	"io"
 	"math/rand"
 	"net"
 	"net/http"
+
+	"github.com/miekg/dns"
+	utls "github.com/refraction-networking/utls"
+	"github.com/xmapst/lightsocks/internal/dialer"
+	"github.com/xmapst/lightsocks/internal/resolver"
 )
 
 const (
@@ -64,8 +66,8 @@ func (dc *dohClient) newRequest(m *dns.Msg) (*http.Request, error) {
 }
 
 func (dc *dohClient) doRequest(req *http.Request) (msg *dns.Msg, err error) {
-	client := &http.Client{Transport: dc.transport}
-	resp, err := client.Do(req)
+	_client := &http.Client{Transport: dc.transport}
+	resp, err := _client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -87,6 +89,35 @@ func newDoHClient(url, iface string, r *Resolver) *dohClient {
 		url: url,
 		transport: &http.Transport{
 			ForceAttemptHTTP2: true,
+			DialTLSContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+				host, port, err := net.SplitHostPort(addr)
+				if err != nil {
+					return nil, err
+				}
+				ips, err := resolver.LookupIPWithResolver(ctx, host, r)
+				if err != nil {
+					return nil, err
+				} else if len(ips) == 0 {
+					return nil, fmt.Errorf("%w: %s", resolver.ErrIPNotFound, host)
+				}
+				ip := ips[rand.Intn(len(ips))]
+
+				var options []dialer.Option
+				if iface != "" {
+					options = append(options, dialer.WithInterface(iface))
+				}
+
+				conn, err := dialer.DialContext(ctx, "tcp", net.JoinHostPort(ip.String(), port), options...)
+				if err != nil {
+					return nil, err
+				}
+				uTlsConn := utls.UClient(conn, &utls.Config{InsecureSkipVerify: true}, utls.HelloChrome_Auto)
+				err = uTlsConn.Handshake()
+				if err != nil {
+					return nil, fmt.Errorf("uTlsConn.Handshake() error: %+v", err)
+				}
+				return uTlsConn, nil
+			},
 			DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
 				host, port, err := net.SplitHostPort(addr)
 				if err != nil {

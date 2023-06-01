@@ -1,9 +1,10 @@
 package net
 
 import (
-	"github.com/xmapst/lightsocks/internal/protocol"
 	"io"
 	"sync"
+
+	"github.com/xmapst/lightsocks/internal/protocol"
 )
 
 const (

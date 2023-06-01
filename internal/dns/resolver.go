@@ -4,15 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand"
+	"net"
+	"strings"
+	"time"
+
 	"github.com/miekg/dns"
 	"github.com/sirupsen/logrus"
 	"github.com/xmapst/lightsocks/internal/cache"
 	"github.com/xmapst/lightsocks/internal/resolver"
 	"golang.org/x/sync/singleflight"
-	"math/rand"
-	"net"
-	"strings"
-	"time"
 )
 
 type dnsClient interface {

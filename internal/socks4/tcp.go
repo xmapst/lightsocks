@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/gofrs/uuid"
-	"github.com/sirupsen/logrus"
-	"github.com/xmapst/lightsocks/internal/constant"
 	"io"
 	"net"
 	"sync"
+
+	"github.com/gofrs/uuid"
+	"github.com/sirupsen/logrus"
+	"github.com/xmapst/lightsocks/internal/constant"
 )
 
 type Proxy struct {

@@ -2,6 +2,10 @@ package main
 
 import (
 	"context"
+	"net"
+	"os"
+	"time"
+
 	"github.com/kardianos/service"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -14,9 +18,6 @@ import (
 	N "github.com/xmapst/lightsocks/internal/net"
 	"github.com/xmapst/lightsocks/internal/tunnel"
 	"github.com/xmapst/lightsocks/internal/udp"
-	"net"
-	"os"
-	"time"
 )
 
 var (

@@ -5,16 +5,17 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/gofrs/uuid"
-	"github.com/sirupsen/logrus"
-	"github.com/xmapst/lightsocks/internal/constant"
-	N "github.com/xmapst/lightsocks/internal/net"
 	"io"
 	"net"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/gofrs/uuid"
+	"github.com/sirupsen/logrus"
+	"github.com/xmapst/lightsocks/internal/constant"
+	N "github.com/xmapst/lightsocks/internal/net"
 )
 
 type Proxy struct {

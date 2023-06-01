@@ -1,15 +1,16 @@
 package mixed
 
 import (
+	"io"
+	"net"
+	"sync"
+
 	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 	"github.com/xmapst/lightsocks/internal/constant"
 	N "github.com/xmapst/lightsocks/internal/net"
 	"github.com/xmapst/lightsocks/internal/socks4"
 	"github.com/xmapst/lightsocks/internal/socks5"
-	"io"
-	"net"
-	"sync"
 )
 
 type Server struct {

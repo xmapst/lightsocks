@@ -1,13 +1,14 @@
 package mixed
 
 import (
+	"net"
+	"sync"
+
 	"github.com/gofrs/uuid"
 	"github.com/xmapst/lightsocks/internal/constant"
 	"github.com/xmapst/lightsocks/internal/http"
 	"github.com/xmapst/lightsocks/internal/socks4"
 	"github.com/xmapst/lightsocks/internal/socks5"
-	"net"
-	"sync"
 )
 
 type Proxy interface {

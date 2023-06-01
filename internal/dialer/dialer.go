@@ -3,8 +3,9 @@ package dialer
 import (
 	"context"
 	"errors"
-	"github.com/xmapst/lightsocks/internal/resolver"
 	"net"
+
+	"github.com/xmapst/lightsocks/internal/resolver"
 )
 
 func DialContext(ctx context.Context, network, address string, options ...Option) (net.Conn, error) {

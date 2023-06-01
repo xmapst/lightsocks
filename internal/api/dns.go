@@ -2,12 +2,13 @@ package api
 
 import (
 	"context"
+	"math"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/miekg/dns"
 	"github.com/samber/lo"
 	"github.com/xmapst/lightsocks/internal/resolver"
-	"math"
-	"net/http"
 )
 
 func queryDNS(c *gin.Context) {

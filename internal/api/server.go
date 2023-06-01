@@ -2,10 +2,14 @@ package api
 
 import (
 	"bytes"
-	"crypto/tls"
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"net"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-contrib/timeout"
@@ -13,15 +17,12 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/refraction-networking/utls"
 	"github.com/sirupsen/logrus"
 	info "github.com/xmapst/lightsocks"
 	"github.com/xmapst/lightsocks/internal/constant"
 	"github.com/xmapst/lightsocks/internal/log"
 	"github.com/xmapst/lightsocks/internal/statistic"
-	"net"
-	"net/http"
-	"strings"
-	"time"
 )
 
 var (

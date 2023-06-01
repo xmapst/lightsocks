@@ -1,9 +1,10 @@
 package statistic
 
 import (
-	"go.uber.org/atomic"
 	"sync"
 	"time"
+
+	"go.uber.org/atomic"
 )
 
 var DefaultManager *Manager

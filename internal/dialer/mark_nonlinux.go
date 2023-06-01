@@ -3,9 +3,10 @@
 package dialer
 
 import (
-	"github.com/sirupsen/logrus"
 	"net"
 	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 var printMarkWarnOnce sync.Once

@@ -1,15 +1,16 @@
 package lightsocks
 
 import (
-	"crypto/tls"
+	"io"
+	"net"
+	"sync"
+
+	"github.com/refraction-networking/utls"
 	"github.com/sirupsen/logrus"
 	"github.com/xmapst/lightsocks/internal/constant"
 	N "github.com/xmapst/lightsocks/internal/net"
 	"github.com/xmapst/lightsocks/internal/protocol"
 	"github.com/xmapst/lightsocks/internal/resolver"
-	"io"
-	"net"
-	"sync"
 )
 
 type Server struct {

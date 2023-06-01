@@ -1,11 +1,12 @@
 package api
 
 import (
+	"strings"
+	"time"
+
 	"github.com/prometheus/client_golang/prometheus"
 	info "github.com/xmapst/lightsocks"
 	"github.com/xmapst/lightsocks/internal/statistic"
-	"strings"
-	"time"
 )
 
 var (

@@ -4,12 +4,13 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"github.com/miekg/dns"
-	"github.com/xmapst/lightsocks/internal/dialer"
-	"github.com/xmapst/lightsocks/internal/resolver"
 	"math/rand"
 	"net"
 	"strings"
+
+	"github.com/miekg/dns"
+	"github.com/xmapst/lightsocks/internal/dialer"
+	"github.com/xmapst/lightsocks/internal/resolver"
 )
 
 type client struct {

@@ -2,10 +2,11 @@ package log
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
-	"github.com/xmapst/lightsocks/internal/observable"
 	"path"
 	"strings"
+
+	"github.com/sirupsen/logrus"
+	"github.com/xmapst/lightsocks/internal/observable"
 )
 
 var (
@@ -36,13 +37,6 @@ func newLogln(logLevel logrus.Level, v ...any) Event {
 	return Event{
 		LogLevel: logLevel,
 		Payload:  msg[:len(msg)-1],
-	}
-}
-
-func newLogf(logLevel logrus.Level, format string, v ...any) Event {
-	return Event{
-		LogLevel: logLevel,
-		Payload:  fmt.Sprintf(format, v...),
 	}
 }
 

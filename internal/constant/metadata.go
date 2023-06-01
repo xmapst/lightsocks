@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gofrs/uuid"
 	"net"
 	"strconv"
 	"strings"
+
+	"github.com/gofrs/uuid"
 )
 
 type NetWork int

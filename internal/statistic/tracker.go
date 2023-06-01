@@ -1,11 +1,12 @@
 package statistic
 
 import (
+	"net"
+	"time"
+
 	"github.com/gofrs/uuid"
 	"github.com/xmapst/lightsocks/internal/constant"
 	"go.uber.org/atomic"
-	"net"
-	"time"
 )
 
 type tracker interface {
