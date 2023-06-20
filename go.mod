@@ -13,7 +13,7 @@ require (
 	github.com/golang/snappy v0.0.4
 	github.com/gorilla/websocket v1.5.0
 	github.com/kardianos/service v1.2.2
-	github.com/miekg/dns v1.1.54
+	github.com/miekg/dns v1.1.55
 	github.com/pires/go-proxyproto v0.7.0
 	github.com/prometheus/client_golang v1.15.1
 	github.com/refraction-networking/utls v1.3.2
